@@ -20,7 +20,6 @@ type Duration = {
 }
 
 function RecordPage(): React.JSX.Element {
-
     const { navigate } = useNavigation<RecordPageNavigationProp>();
     const [recording, setRecording] = useState<Audio.Recording>();
     const [isRecording, setIsRecording] = useState<boolean>(false);

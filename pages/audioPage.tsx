@@ -12,7 +12,6 @@ type AudioPageRouteProp = RouteProp<
 >;
 
 function AudioPage(): React.JSX.Element {
-    
     const route = useRoute<AudioPageRouteProp>();
     
     return (
