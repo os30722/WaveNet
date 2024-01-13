@@ -8,22 +8,20 @@ import RoundButton from "../common/components/roundButton";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Theme from "../common/types/theme";
 import { useThemeContext } from "../common/contexts/themeContext";
+import { formatDuraion } from "../common/utils";
 
 type RecordPageNavigationProp = NativeStackNavigationProp <
     RootStackParamList,
     'Record'
 >;
 
-type Duration = {
-    minute: number,
-    second: number,
-}
-
 function RecordPage(): React.JSX.Element {
+    const maxDuration = 300000;
+
     const { navigate } = useNavigation<RecordPageNavigationProp>();
     const [recording, setRecording] = useState<Audio.Recording>();
     const [isRecording, setIsRecording] = useState<boolean>(false);
-    const [duration, setDuration] = useState<Duration>({minute: 5, second: 0});
+    const [duration, setDuration] = useState<number>(maxDuration);
     const theme = useThemeContext();
     const styles = getStyles(theme);
 
@@ -62,8 +60,9 @@ function RecordPage(): React.JSX.Element {
         });
         setRecording(undefined);
         const uri = recording?.getURI();
-        navigate('Audio', {
-            uri: uri!!       // Showing confidence that uri cannot be null. Fix it later
+        navigate('Publish', {
+            uri: uri!!,      // Showing confidence that uri cannot be null. Fix it later
+            duration:   maxDuration - duration
         });
     };
 
@@ -80,20 +79,17 @@ function RecordPage(): React.JSX.Element {
     const recordingStatusUpdate =  async (status: Audio.RecordingStatus) => {
         let durationMillis = status.durationMillis;
         if (status.isDoneRecording) return;
-        if (durationMillis >= 300000) {
-            console.log(durationMillis, " ", status.isDoneRecording);
+        if (durationMillis >= maxDuration) {
             await stopRecording();
             return;
         } 
-        let min = Math.floor((durationMillis/1000)/60);
-        let sec = Math.floor((durationMillis/1000)%60);
-        setDuration({minute: 4 - (min), second: 59 - sec});
+        setDuration(maxDuration - durationMillis);
     };
 
     return (
         <View style={styles.parent}>
             <View style={styles.info}>
-            <Text style={styles.duration}>{`${duration.minute}:${duration.second.toLocaleString(undefined, {minimumIntegerDigits: 2})}`}</Text>
+            <Text style={styles.duration}>{formatDuraion(duration)}</Text>
             </View>
             <View style={styles.controls}>
                 {

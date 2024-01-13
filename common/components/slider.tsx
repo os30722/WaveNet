@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useThemeContext } from "../contexts/themeContext";
 import Theme from "../types/theme";
 import { StyleSheet, Text, View } from "react-native";
@@ -8,20 +8,30 @@ import Animated, { runOnJS } from "react-native-reanimated";
 interface Props {
   minValue: number,
   maxValue: number,
+  onChangeValue?: (value: number) => void 
+  currentValue?: number
 }
 
-function Slider({minValue, maxValue}: Props): React.JSX.Element {
+function Slider({minValue, maxValue, onChangeValue, currentValue}: Props): React.JSX.Element {
   const theme = useThemeContext();
   const styles = getStyles(theme);
   const [width, setWidth] = useState<number>(1);
   const [leftPer, setLeftPer] = useState<number>(0);
 
+  useEffect(() => {
+    if(currentValue != undefined && currentValue != 0) {
+      const initialPer = (currentValue/maxValue) * 100;
+      setLeftPer(initialPer)
+    }
+  }, [currentValue])
+
   const calculateLeftPer = (num: number) => {
     let per = (num/width) * 100;
-    if (per < 0) per = 0;
+    if (per <= 0) per = 0;
     if (per > 100) per = 100;
-    setLeftPer(per)
-  }
+    onChangeValue?.((maxValue * per) / 100);
+    setLeftPer(per);
+  }   
     
   const pan = Gesture.Pan()
   .onBegin((event) => {
@@ -42,10 +52,6 @@ function Slider({minValue, maxValue}: Props): React.JSX.Element {
           <Animated.View style={[styles.track, {backgroundColor: 'white', flexGrow: 100 - leftPer}]} />
         </View>
       </GestureDetector> 
-      <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>{((maxValue * leftPer)/100) + minValue}</Text>
-        <Text style={styles.infoText}>{maxValue }</Text>
-      </View>           
     </GestureHandlerRootView>
   );
 }
@@ -67,13 +73,6 @@ const getStyles = (theme: Theme) => StyleSheet.create({
       borderRadius: 5,
       backgroundColor: theme.primary,
     },
-    infoContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-    },
-    infoText: {
-      color: theme.text,
-    }
 });
 
 export default Slider;
