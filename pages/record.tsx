@@ -1,4 +1,4 @@
-import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { Audio } from "expo-av";
 import React, { useContext, useEffect, useState } from "react";
 import { Text, Button, View, StyleSheet, ToastAndroid } from "react-native";
@@ -10,12 +10,12 @@ import Theme from "../common/types/theme";
 import { useThemeContext } from "../common/contexts/themeContext";
 import { formatDuraion } from "../common/utils";
 
-type NavigationProp = NativeStackScreenProps <
+type PageNavigationProp = NativeStackScreenProps <
     RootStackParamList,
     'Record'
 >;
 
-function RecordPage({navigation}: NavigationProp): React.JSX.Element {
+function RecordPage({navigation}: PageNavigationProp): React.JSX.Element {
     const maxDuration = 300000;
 
     const [recording, setRecording] = useState<Audio.Recording>();

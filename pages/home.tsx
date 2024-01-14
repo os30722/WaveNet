@@ -4,17 +4,15 @@ import { Button } from "react-native";
 import { RootStackParamList } from "../App";
 import { useNavigation } from "@react-navigation/native";
 
-type NavigationProp =  NativeStackScreenProps<
+type PageNavigationProp =  NativeStackScreenProps<
     RootStackParamList,
     'Home'
 >
 
-function HomePage(): React.JSX.Element {
-    const { navigate } = useNavigation<NavigationProp>();
+function HomePage({navigation}: PageNavigationProp): React.JSX.Element {
 
     return (
         <Button title="Click me" onPress={() => {
-            navigation.navigate('UploadModal')
         }}/>
     )
 }

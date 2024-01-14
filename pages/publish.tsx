@@ -11,12 +11,12 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack/lib/types
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 
-type NavigationProp =  NativeStackScreenProps<
+type PageNavigationProp =  NativeStackScreenProps<
     RootStackParamList,
     'Publish'
 >
 
-function PublishPage({navigation, route}: NavigationProp): React.JSX.Element {
+function PublishPage({navigation, route}: PageNavigationProp): React.JSX.Element {
     const params = route.params;
     const theme = useThemeContext();
     const styles = getStyles(theme);
