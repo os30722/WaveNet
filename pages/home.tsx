@@ -13,6 +13,7 @@ function HomePage({navigation}: PageNavigationProp): React.JSX.Element {
 
     return (
         <Button title="Click me" onPress={() => {
+            navigation.navigate('Record')
         }}/>
     )
 }

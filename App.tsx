@@ -26,7 +26,7 @@ function App(): React.JSX.Element {
       <StatusBar translucent backgroundColor="transparent" />
       <NavigationContainer theme={{colors: {primary:darkTheme.primary, background: darkTheme.background, text: darkTheme.text}}}>
         <Stack.Navigator initialRouteName='Home' screenOptions={{headerStyle: {backgroundColor: darkTheme.background}}}>
-          <Stack.Group>
+          <Stack.Group screenOptions={{animation: 'slide_from_right'}}>
             <Stack.Screen name='Home' component={HomePage} />
             <Stack.Screen name='Record' component={RecordPage} />
             <Stack.Screen name='Publish' component={AudioPage} /> 
