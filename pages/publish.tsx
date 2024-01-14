@@ -16,11 +16,9 @@ type NavigationProp =  NativeStackScreenProps<
     'Publish'
 >
 
-function PublishPage(): React.JSX.Element {
-    const route = useRoute<NavigationProp['route']>();
-    const navigation = useNavigation<NavigationProp['navigation']>();
-    const theme = useThemeContext();
+function PublishPage({navigation, route}: NavigationProp): React.JSX.Element {
     const params = route.params;
+    const theme = useThemeContext();
     const styles = getStyles(theme);
     const [title, setTitle] = useState<string>()
     const [description, setDescription] = useState<string>();

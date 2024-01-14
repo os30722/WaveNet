@@ -1,24 +1,23 @@
-import { useNavigation } from "@react-navigation/native";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { Audio } from "expo-av";
 import React, { useContext, useEffect, useState } from "react";
 import { Text, Button, View, StyleSheet, ToastAndroid } from "react-native";
 import { RootStackParamList } from "../App";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import RoundButton from "../common/components/roundButton";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Theme from "../common/types/theme";
 import { useThemeContext } from "../common/contexts/themeContext";
 import { formatDuraion } from "../common/utils";
 
-type RecordPageNavigationProp = NativeStackNavigationProp <
+type NavigationProp = NativeStackScreenProps <
     RootStackParamList,
     'Record'
 >;
 
-function RecordPage(): React.JSX.Element {
+function RecordPage({navigation}: NavigationProp): React.JSX.Element {
     const maxDuration = 300000;
 
-    const { navigate } = useNavigation<RecordPageNavigationProp>();
     const [recording, setRecording] = useState<Audio.Recording>();
     const [isRecording, setIsRecording] = useState<boolean>(false);
     const [duration, setDuration] = useState<number>(maxDuration);
@@ -60,7 +59,7 @@ function RecordPage(): React.JSX.Element {
         });
         setRecording(undefined);
         const uri = recording?.getURI();
-        navigate('Publish', {
+        navigation.navigate('Publish', {
             uri: uri!!,      // Showing confidence that uri cannot be null. Fix it later
             duration:   maxDuration - duration
         });
