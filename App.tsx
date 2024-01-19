@@ -1,12 +1,13 @@
 import React from "react";
 import { StatusBar, StyleSheet, Text, View, useColorScheme } from "react-native";
 import RecordPage from "./pages/record";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, NavigatorScreenParams } from "@react-navigation/native";
 import AudioPage from "./pages/publish";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ThemeContext from "./common/contexts/themeContext";
 import { darkTheme } from "./common/types/theme";
-import HomePage from "./pages/home";
+import HomePage, { BottomTabParamList } from "./pages/main";
+import MainPage from "./pages/main";
 
 export type RootStackParamList = {
   Record: undefined;
@@ -14,7 +15,7 @@ export type RootStackParamList = {
     uri: string,
     duration: number,
   },
-  Home: undefined,
+  Main: NavigatorScreenParams<BottomTabParamList>,
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -27,7 +28,7 @@ function App(): React.JSX.Element {
       <NavigationContainer theme={{colors: {primary:darkTheme.primary, background: darkTheme.background, text: darkTheme.text}}}>
         <Stack.Navigator initialRouteName='Home' screenOptions={{headerStyle: {backgroundColor: darkTheme.background}}}>
           <Stack.Group screenOptions={{animation: 'slide_from_right'}}>
-            <Stack.Screen name='Home' component={HomePage} />
+            <Stack.Screen name='Main' component={MainPage} />
             <Stack.Screen name='Record' component={RecordPage} />
             <Stack.Screen name='Publish' component={AudioPage} /> 
           </Stack.Group>
