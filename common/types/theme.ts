@@ -3,6 +3,7 @@ interface Theme {
     background: string
     text: string,
     label: string,
+    bottomSheet: string,
 }
 
 const darkTheme: Theme = {
@@ -10,6 +11,7 @@ const darkTheme: Theme = {
     background: "#000000",
     text: "#ffffff",
     label: '#ababab',
+    bottomSheet: '#212121',
 }
 
 export {darkTheme};

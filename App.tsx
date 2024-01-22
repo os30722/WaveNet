@@ -8,6 +8,7 @@ import ThemeContext from "./common/contexts/themeContext";
 import { darkTheme } from "./common/types/theme";
 import HomePage, { BottomTabParamList } from "./pages/main";
 import MainPage from "./pages/main";
+import SelectionPage from "./pages/selection";
 
 export type RootStackParamList = {
   Record: undefined;
@@ -16,6 +17,7 @@ export type RootStackParamList = {
     duration: number,
   },
   Main: NavigatorScreenParams<BottomTabParamList>,
+  Selection: undefined,
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -27,10 +29,15 @@ function App(): React.JSX.Element {
       <StatusBar translucent backgroundColor="transparent" />
       <NavigationContainer theme={{colors: {primary:darkTheme.primary, background: darkTheme.background, text: darkTheme.text}}}>
         <Stack.Navigator initialRouteName='Main' screenOptions={{headerStyle: {backgroundColor: darkTheme.background}}}>
-          <Stack.Group screenOptions={{animation: 'slide_from_right'}}>
+          <Stack.Group screenOptions={{ }}>
             <Stack.Screen name='Main' component={MainPage} />
             <Stack.Screen name='Record' component={RecordPage} />
-            <Stack.Screen name='Publish' component={AudioPage} /> 
+            <Stack.Screen name='Publish' component={AudioPage} />   
+            <Stack.Screen name='Selection' component={SelectionPage} options={{
+               headerShown: false,
+               presentation: "transparentModal",
+               animation: 'none'
+            }}/>
           </Stack.Group>
         </Stack.Navigator>
       </NavigationContainer>

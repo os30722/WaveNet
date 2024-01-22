@@ -13,6 +13,7 @@ import { useThemeContext } from "../common/contexts/themeContext";
 export type BottomTabParamList = {
     Home: undefined,
     Search: undefined,
+    Create: undefined,
     Profile: undefined,
 };
 
@@ -25,6 +26,7 @@ function MainPage(): React.JSX.Element {
         <Tab.Navigator screenOptions={{
             tabBarInactiveTintColor: 'white',
             tabBarActiveTintColor: theme.primary,
+            headerShown: false
         }}>
             <Tab.Screen name ='Home' component={HomePage} 
                 options={{
@@ -32,8 +34,13 @@ function MainPage(): React.JSX.Element {
                 }}
                 />
             <Tab.Screen name='Search' component={SearchPage} 
-               options={{
+               options={{   
                     tabBarIcon: ({color,size}) => <Icon name='search' color={color} size={size} />
+                }}
+            />
+            <Tab.Screen name='Create' component={() => null} 
+               options={{   
+                    tabBarIcon: ({color,size}) => <Icon name='create' color={color} size={size} />
                 }}
             />
             <Tab.Screen name='Profile' component={ProfilePage} 
