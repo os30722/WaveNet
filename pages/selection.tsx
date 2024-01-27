@@ -32,7 +32,7 @@ function SelectionPage({navigation}: PageNavigationProp): React.JSX.Element {
 
     const pickAudioFile = async () => {
         let options: DocumentPicker.DocumentPickerOptions = {
-            
+            type: 'audio/*',
         };
         let result = await DocumentPicker.getDocumentAsync(options);
         if (result.assets != null) {
