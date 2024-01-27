@@ -15,7 +15,6 @@ interface Props {
 function PlayerLarge({uri}: Props): React.JSX.Element {
     const theme = useThemeContext();
     const styles = getStyles(theme);
-    const [seek, setSeek] = useState<number>(0);
     const [isPlaying, setIsPlaying] = useState<boolean>(false)
     const progress = useProgress(100);
     const controlsSize = 35;
@@ -32,6 +31,11 @@ function PlayerLarge({uri}: Props): React.JSX.Element {
             }
             await TrackPlayer.setQueue([track])
         })()
+        
+        return (() => {
+            TrackPlayer.stop();
+            TrackPlayer.setQueue([])
+        })
     }, []);
     
     const startAudio = async () => {
@@ -49,11 +53,19 @@ function PlayerLarge({uri}: Props): React.JSX.Element {
         TrackPlayer.seekTo(newSeek / 1000);
     }
 
+    const onDragEnd = () => {
+        TrackPlayer.play();
+    }
+
     
     // Here progrss.position returns time in seconds we need to conver into milliseconds.
     return (
         <View style={styles.container}>
-            <Slider minValue={0} maxValue={progress.duration * 1000} onChangeValue={changeSeek} currentValue={(progress.position)*1000}/>
+            <Slider minValue={0} maxValue={progress.duration * 1000} 
+                onChangeValue={changeSeek} 
+                currentValue={(progress.position)*1000}
+                onDragEnd={onDragEnd}
+            />
             <View style={styles.infoContainer}>
                 <Text style={styles.infoText}>{formatDuraion(progress.position*1000)}</Text>
                 <Text style={styles.infoText}>{formatDuraion(progress.duration * 1000)}</Text>

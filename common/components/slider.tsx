@@ -9,10 +9,11 @@ interface Props {
   minValue: number,
   maxValue: number,
   onChangeValue?: (value: number) => void 
+  onDragEnd?: () => void
   currentValue?: number
 }
 
-function Slider({minValue, maxValue, onChangeValue, currentValue}: Props): React.JSX.Element {
+function Slider({minValue, maxValue, onChangeValue, currentValue, onDragEnd}: Props): React.JSX.Element {
   const theme = useThemeContext();
   const styles = getStyles(theme);
   const [width, setWidth] = useState<number>(1);
@@ -39,6 +40,9 @@ function Slider({minValue, maxValue, onChangeValue, currentValue}: Props): React
   })
   .onChange((event) => {
     runOnJS(calculateLeftPer)(event.x);
+  })
+  .onEnd(() => {
+    runOnJS(onDragEnd!)();
   })
 
   return (

@@ -1,11 +1,12 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useCallback, useMemo, useRef } from "react";
 import { RootStackParamList } from "../App";
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { TouchableOpacity } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { StyleSheet, Text, View } from "react-native";
 import Theme from "../common/types/theme";
 import { useThemeContext } from "../common/contexts/themeContext";
+import * as DocumentPicker from 'expo-document-picker';
 
 type PageNavigationProp = NativeStackScreenProps<
     RootStackParamList,
@@ -25,6 +26,23 @@ function SelectionPage({navigation}: PageNavigationProp): React.JSX.Element {
         }
     }, [])
 
+    const navigateToRecord = () => {
+        navigation.navigate('Record');
+    }
+
+    const pickAudioFile = async () => {
+        let options: DocumentPicker.DocumentPickerOptions = {
+            
+        };
+        let result = await DocumentPicker.getDocumentAsync(options);
+        if (result.assets != null) {
+            navigation.navigate('Publish', {
+                uri: result.assets[0].uri,
+                duration: 0,
+            });
+        }
+    }
+
     return (
         <GestureHandlerRootView style={{flex: 1}}>
             <View style={{flex: 1}}>
@@ -38,8 +56,12 @@ function SelectionPage({navigation}: PageNavigationProp): React.JSX.Element {
                 >
                     <View style={styles.contentContainer}>
                         <Text style={styles.label}>Create From</Text>
-                        <Text style={styles.options}>Device Storage</Text>
-                        <Text style={styles.options}>On-Device Recoding</Text>
+                        <TouchableOpacity onPress={pickAudioFile}>
+                            <Text style={styles.options}>Device Storage</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={navigateToRecord}>
+                            <Text style={styles.options}>On-Device Recoding</Text>
+                        </TouchableOpacity>
                     </View>
                 </BottomSheet>
             </View>

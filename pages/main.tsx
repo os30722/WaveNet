@@ -19,8 +19,14 @@ export type BottomTabParamList = {
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
-function MainPage(): React.JSX.Element {
+type PageNavigationProp = NativeStackScreenProps <
+    RootStackParamList,
+    'Main'
+>;
+
+function MainPage({navigation}: PageNavigationProp): React.JSX.Element {
     const theme = useThemeContext();
+
     
     return (
         <Tab.Navigator screenOptions={{
@@ -38,9 +44,15 @@ function MainPage(): React.JSX.Element {
                     tabBarIcon: ({color,size}) => <Icon name='search' color={color} size={size} />
                 }}
             />
-            <Tab.Screen name='Create' component={() => null} 
+            <Tab.Screen name='Create' component={HomePage} 
                options={{   
                     tabBarIcon: ({color,size}) => <Icon name='create' color={color} size={size} />
+                }}
+                listeners = {{
+                    tabPress: (e) => {
+                        e.preventDefault();
+                        navigation.navigate('Selection')
+                    }
                 }}
             />
             <Tab.Screen name='Profile' component={ProfilePage} 
