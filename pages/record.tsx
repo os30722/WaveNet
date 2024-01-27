@@ -27,15 +27,21 @@ function RecordPage({navigation}: PageNavigationProp): React.JSX.Element {
     useEffect(() => {
         if (recording) {
             recording.setOnRecordingStatusUpdate(recordingStatusUpdate);
+            return () => {
+                recording?.setOnRecordingStatusUpdate(null);
+                recording?.stopAndUnloadAsync();
+                Audio.setAudioModeAsync({
+                    allowsRecordingIOS: false,
+                });    
+            }
         }
 
-        return () => recording?.setOnRecordingStatusUpdate(null);
     }, [recording])
 
     const startRecording = async () => {
         setIsRecording(true);
         try {
-            await Audio.requestPermissionsAsync();
+            await Audio.requestPermissionsAsync();  
             await Audio.setAudioModeAsync({
                 allowsRecordingIOS: true,
                 playsInSilentModeIOS: true,
@@ -51,14 +57,16 @@ function RecordPage({navigation}: PageNavigationProp): React.JSX.Element {
         }
     };
 
+
+
     const stopRecording = async () => {
         setIsRecording(false)
         await recording?.stopAndUnloadAsync();
         await Audio.setAudioModeAsync({
             allowsRecordingIOS: false,
-        });
-        setRecording(undefined);
+        });        
         const uri = recording?.getURI();
+        setRecording(undefined);
         navigation.navigate('Publish', {
             uri: uri!!,      // Showing confidence that uri cannot be null. Fix it later
             duration:   maxDuration - duration
