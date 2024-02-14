@@ -1,16 +1,11 @@
-import { RouteProp, useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import { Audio } from "expo-av";
-import React, { useCallback, useEffect, useState } from "react";
-import { BackHandler, Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { RootStackParamList } from "../App";
-import TrackPlayer, { AppKilledPlaybackBehavior, RepeatMode } from "react-native-track-player";
-import PlayerLarge from "../common/components/playerLarge";
-import { useThemeContext } from "../common/contexts/themeContext";
-import Theme from "../common/types/theme";
-import { NativeStackScreenProps } from "@react-navigation/native-stack/lib/typescript/src/types";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import { ScreenStackHeaderBackButtonImage } from "react-native-screens";
-
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { RootStackParamList } from '../App';
+import PlayerLarge from '../common/components/playerLarge';
+import { useThemeContext } from '../common/contexts/themeContext';
+import Theme from '../common/types/theme';
+import { NativeStackScreenProps } from '@react-navigation/native-stack/lib/typescript/src/types';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 type PageNavigationProp =  NativeStackScreenProps<
     RootStackParamList,

@@ -8,8 +8,8 @@ interface Theme {
 
 const darkTheme: Theme = {
     primary: '#d47204',
-    background: "#000000",
-    text: "#ffffff",
+    background: '#000000',
+    text: '#ffffff',
     label: '#ababab',
     bottomSheet: '#212121',
 }

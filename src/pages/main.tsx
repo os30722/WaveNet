@@ -1,14 +1,12 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useState } from "react";
-import { Button } from "react-native";
-import { RootStackParamList } from "../App";
-import { useNavigation, useTheme } from "@react-navigation/native";
-import { BottomTabBarProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomePage from "./home";
-import ProfilePage from "./profile";
-import SearchPage from "./search";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import { useThemeContext } from "../common/contexts/themeContext";
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React from 'react';
+import { RootStackParamList } from '../App';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import HomePage from './home';
+import ProfilePage from './profile';
+import SearchPage from './search';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useThemeContext } from '../common/contexts/themeContext';
 
 export type BottomTabParamList = {
     Home: undefined,

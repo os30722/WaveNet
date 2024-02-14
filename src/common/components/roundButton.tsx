@@ -1,7 +1,7 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Theme from "../types/theme";
-import { useThemeContext } from "../contexts/themeContext";
+import Theme from '../types/theme';
+import { useThemeContext } from '../contexts/themeContext';
 
 interface Props {
     style?: {

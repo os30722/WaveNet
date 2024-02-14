@@ -1,14 +1,13 @@
-import { useNavigation } from "@react-navigation/native";
-import { Audio } from "expo-av";
-import React, { useContext, useEffect, useState } from "react";
-import { Text, Button, View, StyleSheet, ToastAndroid } from "react-native";
-import { RootStackParamList } from "../App";
-import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
-import RoundButton from "../common/components/roundButton";
+import { Audio } from 'expo-av';
+import React, { useEffect, useState } from 'react';
+import { Text, View, StyleSheet, ToastAndroid } from 'react-native';
+import { RootStackParamList } from '../App';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import RoundButton from '../common/components/roundButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Theme from "../common/types/theme";
-import { useThemeContext } from "../common/contexts/themeContext";
-import { formatDuraion } from "../common/utils";
+import Theme from '../common/types/theme';
+import { useThemeContext } from '../common/contexts/themeContext';
+import { formatDuraion } from '../common/utils';
 
 type PageNavigationProp = NativeStackScreenProps <
     RootStackParamList,

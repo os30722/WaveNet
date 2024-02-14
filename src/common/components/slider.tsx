@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useThemeContext } from "../contexts/themeContext";
-import Theme from "../types/theme";
-import { StyleSheet, Text, View } from "react-native";
-import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
-import Animated, { runOnJS } from "react-native-reanimated";
+import React, { useContext, useEffect, useState } from 'react';
+import { useThemeContext } from '../contexts/themeContext';
+import Theme from '../types/theme';
+import { StyleSheet, Text, View } from 'react-native';
+import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
+import Animated, { runOnJS } from 'react-native-reanimated';
 
 interface Props {
   minValue: number,
