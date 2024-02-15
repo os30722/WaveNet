@@ -6,8 +6,8 @@ import AudioPage from './pages/publish';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ThemeContext from './common/contexts/themeContext';
 import { darkTheme } from './common/types/theme';
-import HomePage, { BottomTabParamList } from './pages/main';
-import MainPage from './pages/main';
+import HomePage, { BottomTabParamList } from './pages/main/main';
+import MainPage from './pages/main/main';
 import SelectionPage from './pages/selection';
 
 export type RootStackParamList = {

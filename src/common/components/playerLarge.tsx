@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Theme from '../types/theme';
 import { useThemeContext } from '../contexts/themeContext';
 import Slider from './slider';
-import { formatDuraion } from '../utils';
+import { formatDuraion } from '../../utils/date';
 import TrackPlayer, { Event, State, useProgress, useTrackPlayerEvents } from 'react-native-track-player';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 

@@ -4,7 +4,7 @@ import { CompositeScreenProps } from '@react-navigation/native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { BottomTabParamList } from './main';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from '../../App';
 
 type PageNavigationProp = CompositeScreenProps<
     BottomTabScreenProps<BottomTabParamList, 'Home'>,

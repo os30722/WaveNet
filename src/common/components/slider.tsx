@@ -44,6 +44,9 @@ function Slider({minValue, maxValue, onChangeValue, currentValue, onDragEnd}: Pr
   .onEnd(() => {
     runOnJS(onDragEnd!)();
   })
+  .onFinalize(() => {
+    runOnJS(onDragEnd!)()
+  })
 
   return (
     <GestureHandlerRootView onLayout={({nativeEvent}) => {

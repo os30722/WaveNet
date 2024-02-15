@@ -7,7 +7,7 @@ import RoundButton from '../common/components/roundButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Theme from '../common/types/theme';
 import { useThemeContext } from '../common/contexts/themeContext';
-import { formatDuraion } from '../common/utils';
+import { formatDuraion } from '../utils/date';
 
 type PageNavigationProp = NativeStackScreenProps <
     RootStackParamList,
