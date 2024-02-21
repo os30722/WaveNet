@@ -25,7 +25,6 @@ type PageNavigationProp = NativeStackScreenProps <
 function MainPage({navigation}: PageNavigationProp): React.JSX.Element {
     const theme = useThemeContext();
 
-    
     return (
         <Tab.Navigator screenOptions={{
             tabBarInactiveTintColor: 'white',

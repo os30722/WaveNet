@@ -9,6 +9,7 @@ import { darkTheme } from './common/types/theme';
 import HomePage, { BottomTabParamList } from './pages/main/main';
 import MainPage from './pages/main/main';
 import SelectionPage from './pages/selection';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export type RootStackParamList = {
   Record: undefined;
@@ -21,26 +22,29 @@ export type RootStackParamList = {
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+const queryClient = new QueryClient();
 
 function App(): React.JSX.Element {
 
   return (
     <ThemeContext.Provider value={darkTheme}>
       <StatusBar translucent backgroundColor='transparent' />
-      <NavigationContainer theme={{colors: {primary:darkTheme.primary, background: darkTheme.background, text: darkTheme.text}}}>
-        <Stack.Navigator initialRouteName='Main' screenOptions={{headerStyle: {backgroundColor: darkTheme.background}}}>
-          <Stack.Group screenOptions={{ animation: 'slide_from_right' }}>
-            <Stack.Screen name='Main' component={MainPage} />
-            <Stack.Screen name='Record' component={RecordPage} />
-            <Stack.Screen name='Publish' component={AudioPage} />   
-            <Stack.Screen name='Selection' component={SelectionPage} options={{
-               headerShown: false,
-               presentation: 'transparentModal',
-               animation: 'none'
-            }}/>
-          </Stack.Group>
-        </Stack.Navigator>
-      </NavigationContainer>
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer theme={{colors: {primary:darkTheme.primary, background: darkTheme.background, text: darkTheme.text}}}>
+          <Stack.Navigator initialRouteName='Main' screenOptions={{headerStyle: {backgroundColor: darkTheme.background}}}>
+            <Stack.Group screenOptions={{ animation: 'slide_from_right' }}>
+              <Stack.Screen name='Main' component={MainPage} />
+              <Stack.Screen name='Record' component={RecordPage} />
+              <Stack.Screen name='Publish' component={AudioPage} />   
+              <Stack.Screen name='Selection' component={SelectionPage} options={{
+                headerShown: false,
+                presentation: 'transparentModal',
+                animation: 'none'
+              }}/>
+            </Stack.Group>
+          </Stack.Navigator>
+        </NavigationContainer>
+        </QueryClientProvider>
     </ThemeContext.Provider>
   );
 }
