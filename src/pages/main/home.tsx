@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { BottomTabParamList } from './main';
@@ -8,7 +8,8 @@ import { RootStackParamList } from '../../App';
 import { useAxiosQuery } from '../../utils/network';
 import Theme from '../../common/types/theme';
 import { useThemeContext } from '../../common/contexts/themeContext';
-import { PostList } from '../../common/types/posts';
+import { Post, PostList } from '../../common/types/posts';
+import TrackPlayer, { Track, TrackType } from 'react-native-track-player';
 
 type PageNavigationProp = CompositeScreenProps<
     BottomTabScreenProps<BottomTabParamList, 'Home'>,
@@ -16,15 +17,26 @@ type PageNavigationProp = CompositeScreenProps<
 >
 
 function HomePage({navigation}: PageNavigationProp): React.JSX.Element {
-    const { data } = useAxiosQuery<PostList>('posts/getPosts', ['posts'])
+    const { data, error } = useAxiosQuery<PostList>('posts/getPosts', ['posts'])
     const theme = useThemeContext();
     const styles = getStyles(theme);
+
+    const playAudio = async (post: Post) => {
+        const track: Track = {
+            url: post.url,
+            type: TrackType.Dash,
+            title: post.title,
+        }
+        console.log(track)
+        await TrackPlayer.setQueue([track]);
+        TrackPlayer.play();
+    }
 
     return (
         <View style={styles.parent}>
             {data?.map((post: any) => {
                 return (
-                    <Text key={post.id} style={{color: 'white'}}>{post.title}</Text>    
+                    <Button key={post.id} title={post.title} onPress={() => playAudio(post)}/>  
                 )
             })}
         </View>
