@@ -12,7 +12,7 @@ interface Props {
     duration: number
 }
 
-function PlayerLarge({uri}: Props): React.JSX.Element {
+function PublishPlayer({uri}: Props): React.JSX.Element {
     const theme = useThemeContext();
     const styles = getStyles(theme);
     const [isPlaying, setIsPlaying] = useState<boolean>(false)
@@ -108,7 +108,7 @@ const getStyles = (theme: Theme) => StyleSheet.create({
     }
 });
 
-export default PlayerLarge;
+export default PublishPlayer;
 
 
 

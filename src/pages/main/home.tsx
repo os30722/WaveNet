@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { BottomTabParamList } from './main';
@@ -10,6 +10,7 @@ import Theme from '../../common/types/theme';
 import { useThemeContext } from '../../common/contexts/themeContext';
 import { Post, PostList } from '../../common/types/posts';
 import TrackPlayer, { Track, TrackType } from 'react-native-track-player';
+import PostCards from '../../common/components/postCards';
 
 type PageNavigationProp = CompositeScreenProps<
     BottomTabScreenProps<BottomTabParamList, 'Home'>,
@@ -34,11 +35,11 @@ function HomePage({navigation}: PageNavigationProp): React.JSX.Element {
 
     return (
         <View style={styles.parent}>
-            {data?.map((post: any) => {
-                return (
-                    <Button key={post.id} title={post.title} onPress={() => playAudio(post)}/>  
-                )
-            })}
+            <FlatList 
+                data={data}
+                renderItem={({item}) => <PostCards post={item}/>}
+                keyExtractor={(item) => item.id}
+            />
         </View>
     );
 }

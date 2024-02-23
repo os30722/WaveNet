@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { RootStackParamList } from '../App';
-import PlayerLarge from '../common/components/playerLarge';
+import PublishPlayer from '../common/components/publishPlayer';
 import { useThemeContext } from '../common/contexts/themeContext';
 import Theme from '../common/types/theme';
 import { NativeStackScreenProps } from '@react-navigation/native-stack/lib/typescript/src/types';
@@ -40,7 +40,7 @@ function PublishPage({navigation, route}: PageNavigationProp): React.JSX.Element
 
     return (
         <ScrollView style={styles.container}>
-            <PlayerLarge uri={params.uri} duration={params.duration} />
+            <PublishPlayer uri={params.uri} duration={params.duration} />
             <Text style={styles.labels}>Give A Title</Text>
             <TextInput
                 maxLength={100}

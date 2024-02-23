@@ -11,11 +11,14 @@ interface Props {
   onChangeValue?: (value: number) => void 
   onDragEnd?: () => void
   currentValue?: number
+  height?: number
+  hideThumb?: boolean
 }
 
-function Slider({minValue, maxValue, onChangeValue, currentValue, onDragEnd}: Props): React.JSX.Element {
+function Slider({minValue, maxValue, onChangeValue, currentValue, onDragEnd, height,
+        hideThumb}: Props): React.JSX.Element {
   const theme = useThemeContext();
-  const styles = getStyles(theme);
+  const styles = getStyles(theme, height);
   const [width, setWidth] = useState<number>(1);
   const [leftPer, setLeftPer] = useState<number>(0);
 
@@ -42,10 +45,10 @@ function Slider({minValue, maxValue, onChangeValue, currentValue, onDragEnd}: Pr
     runOnJS(calculateLeftPer)(event.x);
   })
   .onEnd(() => {
-    runOnJS(onDragEnd!)();
+    onDragEnd && runOnJS(onDragEnd)();
   })
   .onFinalize(() => {
-    runOnJS(onDragEnd!)()
+    onDragEnd && runOnJS(onDragEnd)()
   })
 
   return (
@@ -55,7 +58,7 @@ function Slider({minValue, maxValue, onChangeValue, currentValue, onDragEnd}: Pr
       <GestureDetector gesture={pan}>
         <View style={styles.sliderContainer}>
           <Animated.View style={[styles.track, {flexGrow: leftPer}]} />
-          <Animated.View style={styles.thumb} />
+          {!hideThumb && <Animated.View style={styles.thumb} />}
           <Animated.View style={[styles.track, {backgroundColor: 'white', flexGrow: 100 - leftPer}]} />
         </View>
       </GestureDetector> 
@@ -63,7 +66,7 @@ function Slider({minValue, maxValue, onChangeValue, currentValue, onDragEnd}: Pr
   );
 }
 
-const getStyles = (theme: Theme) => StyleSheet.create({
+const getStyles = (theme: Theme, height?: number) => StyleSheet.create({
     sliderContainer: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -71,7 +74,7 @@ const getStyles = (theme: Theme) => StyleSheet.create({
     },
     track: {
       backgroundColor: theme.primary,
-      height: 4, 
+      height: height || 4, 
       borderRadius: 1,
     },
     thumb: {

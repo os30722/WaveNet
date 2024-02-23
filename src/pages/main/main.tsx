@@ -1,12 +1,13 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { RootStackParamList } from '../../App';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { BottomTabBar, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomePage from './home';
 import ProfilePage from './profile';
 import SearchPage from './search';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useThemeContext } from '../../common/contexts/themeContext';
+import SmallPlayer from '../../common/components/smallPlayer';
 
 export type BottomTabParamList = {
     Home: undefined,
@@ -29,8 +30,15 @@ function MainPage({navigation}: PageNavigationProp): React.JSX.Element {
         <Tab.Navigator screenOptions={{
             tabBarInactiveTintColor: 'white',
             tabBarActiveTintColor: theme.primary,
-            headerShown: false
-        }}>
+            headerShown: false,
+        }}
+        tabBar={(props) => (
+            <>
+                <SmallPlayer />
+                <BottomTabBar {...props} />
+            </>
+        )}
+        >
             <Tab.Screen name ='Home' component={HomePage} 
                 options={{
                     tabBarIcon: ({color,size}) => <Icon name='home-filled' color={color} size={size} />
