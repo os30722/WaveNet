@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { RootStackParamList } from '../App';
 import PublishPlayer from '../common/components/publishPlayer';
@@ -6,6 +6,7 @@ import { useThemeContext } from '../common/contexts/themeContext';
 import Theme from '../common/types/theme';
 import { NativeStackScreenProps } from '@react-navigation/native-stack/lib/typescript/src/types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useAxioMutation } from '../utils/network';
 
 type PageNavigationProp =  NativeStackScreenProps<
     RootStackParamList,
@@ -18,16 +19,30 @@ function PublishPage({navigation, route}: PageNavigationProp): React.JSX.Element
     const styles = getStyles(theme);
     const [title, setTitle] = useState<string>()
     const [description, setDescription] = useState<string>();
+    const { mutate } = useAxioMutation('/posts/upload');
+
+    const submitForm = () =>     {
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('recoding', {
+            uri: params.uri,
+            type: 'audio/m4a',
+            name: 'recording.m4a',    
+        });
+        mutate(formData);
+        navigation.popToTop();
+    }
 
     useEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity>
+                <TouchableOpacity onPress={submitForm}>
                     <Icon name='arrow-forward' size={30} color={theme.primary} />
                 </TouchableOpacity>
             )
         })
-    }, [navigation]);
+    }, [navigation, title, description]);
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('beforeRemove', e => {

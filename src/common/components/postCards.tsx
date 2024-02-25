@@ -1,8 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useThemeContext } from '../contexts/themeContext';
 import Theme from '../types/theme';
 import { Post } from '../types/posts';
+import { BASE_URL } from '../../utils/network';
+import TrackPlayer, { Track, TrackType } from 'react-native-track-player';
 
 interface Props {
     post: Post
@@ -12,12 +14,25 @@ function PostCards({post}: Props): React.JSX.Element {
     const theme = useThemeContext();
     const styles = getStyles(theme);
 
+    const playAudio = async () => {
+        const track: Track = {
+            url: BASE_URL + post.url,
+            type: TrackType.Dash,
+            title: post.title,
+        }
+        console.log(track)
+        await TrackPlayer.setQueue([track]);
+        TrackPlayer.play();
+    }
+
     return (
         <View style={styles.parent}>
             <Text style={styles.author}>{post.author}</Text>
             <View style={styles.info}>
                 <View style={styles.image}></View>
-                <Text style={styles.tite}>{post.title}</Text>
+                <TouchableOpacity onPress={playAudio}>
+                    <Text style={styles.tite}>{post.title}</Text>
+                </TouchableOpacity>
             </View>
         </View>
     )

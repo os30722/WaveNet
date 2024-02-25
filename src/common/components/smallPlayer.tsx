@@ -1,16 +1,27 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useThemeContext } from '../contexts/themeContext';
 import Theme from '../types/theme';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Slider from './slider';
-import { useProgress } from 'react-native-track-player';
+import TrackPlayer, { State, usePlaybackState, useProgress } from 'react-native-track-player';
 
 function SmallPlayer(): React.JSX.Element {
     const theme = useThemeContext();
     const styles = getStyles(theme);
     const controlsSize = 37;
-    const progress = useProgress(100);
+    const progress = useProgress(1000);
+    const playerState = usePlaybackState();
+    const isPlaying = playerState.state === State.Playing;
+
+
+    const playAudio = async () => {
+        TrackPlayer.play();
+    }
+
+    const pauseAudio = async () => {
+        TrackPlayer.pause();
+    }
 
 
     return (
@@ -21,10 +32,14 @@ function SmallPlayer(): React.JSX.Element {
                     <Text style={styles.tite} numberOfLines={1}>This is a test song looks razy good fefe</Text>
                     <Text style={styles.artist} numberOfLines={1}>Artist</Text>
                 </View>
-                <Icon name='play-arrow' size={controlsSize} color='white' style={styles.control}/>
+                <TouchableOpacity onPress={isPlaying? pauseAudio : playAudio}>
+                    { isPlaying ? 
+                    <Icon name='pause' size={controlsSize} color='white' style={styles.control}/>
+                    :<Icon name='play-arrow' size={controlsSize} color='white' style={styles.control}/>}
+                </TouchableOpacity>
                 <Icon name='close' size={controlsSize} color='white' />
             </View>
-            <Slider minValue={0} maxValue={progress.position * 1000} currentValue={progress.position * 1000}
+            <Slider minValue={0} maxValue={progress.duration * 1000} currentValue={progress.position * 1000}
                 height={2} hideThumb />
         </View>
     )

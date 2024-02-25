@@ -22,22 +22,11 @@ function HomePage({navigation}: PageNavigationProp): React.JSX.Element {
     const theme = useThemeContext();
     const styles = getStyles(theme);
 
-    const playAudio = async (post: Post) => {
-        const track: Track = {
-            url: post.url,
-            type: TrackType.Dash,
-            title: post.title,
-        }
-        console.log(track)
-        await TrackPlayer.setQueue([track]);
-        TrackPlayer.play();
-    }
-
     return (
         <View style={styles.parent}>
             <FlatList 
                 data={data}
-                renderItem={({item}) => <PostCards post={item}/>}
+                renderItem={({item}) => <PostCards post={item} />}
                 keyExtractor={(item) => item.id}
             />
         </View>
