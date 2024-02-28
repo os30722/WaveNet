@@ -11,6 +11,7 @@ import { useThemeContext } from '../../common/contexts/themeContext';
 import { Post, PostList } from '../../common/types/posts';
 import TrackPlayer, { Track, TrackType } from 'react-native-track-player';
 import PostCards from '../../common/components/postCards';
+import PageList from '../../common/components/pageList';
 
 type PageNavigationProp = CompositeScreenProps<
     BottomTabScreenProps<BottomTabParamList, 'Home'>,
@@ -24,11 +25,7 @@ function HomePage({navigation}: PageNavigationProp): React.JSX.Element {
 
     return (
         <View style={styles.parent}>
-            <FlatList 
-                data={data}
-                renderItem={({item}) => <PostCards post={item} />}
-                keyExtractor={(item) => item.id}
-            />
+            <PageList style={styles.list}/>
         </View>
     );
 }
@@ -38,6 +35,9 @@ const getStyles = (theme: Theme) => StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
     },
-})
+    list: {
+        flex: 1
+    }
+});
 
 export default HomePage;

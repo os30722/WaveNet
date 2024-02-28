@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useThemeContext } from '../contexts/themeContext';
 import Theme from '../types/theme';
@@ -14,25 +14,15 @@ function PostCards({post}: Props): React.JSX.Element {
     const theme = useThemeContext();
     const styles = getStyles(theme);
 
-    const playAudio = async () => {
-        const track: Track = {
-            url: BASE_URL + post.url,
-            type: TrackType.Dash,
-            title: post.title,
-        }
-        console.log(track)
-        await TrackPlayer.setQueue([track]);
-        TrackPlayer.play();
-    }
-
+    
     return (
         <View style={styles.parent}>
             <Text style={styles.author}>{post.author}</Text>
             <View style={styles.info}>
                 <View style={styles.image}></View>
-                <TouchableOpacity onPress={playAudio}>
-                    <Text style={styles.tite}>{post.title}</Text>
-                </TouchableOpacity>
+                {/* <TouchableOpacity onPress={playAudio}> */}
+                    <Text style={styles.tite}>{post.id}</Text>
+                {/* </TouchableOpacity> */}
             </View>
         </View>
     )
@@ -66,4 +56,4 @@ const getStyles = (theme: Theme) => StyleSheet.create({
 })
 
 
-export default PostCards;
+export default memo(PostCards);

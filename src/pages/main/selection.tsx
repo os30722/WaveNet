@@ -1,11 +1,11 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useCallback, useMemo, useRef } from 'react';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from '../../App';
 import BottomSheet, { TouchableOpacity } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StyleSheet, Text, View } from 'react-native';
-import Theme from '../common/types/theme';
-import { useThemeContext } from '../common/contexts/themeContext';
+import Theme from '../../common/types/theme';
+import { useThemeContext } from '../../common/contexts/themeContext';
 import * as DocumentPicker from 'expo-document-picker';
 
 type PageNavigationProp = NativeStackScreenProps<

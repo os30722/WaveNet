@@ -1,29 +1,43 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { Page } from '../common/types/posts';
 
-export const BASE_URL = 'http://192.168.0.102:3000/'
+export const BASE_URL = 'http://192.168.0.100:3000/'
 
-const axiosClient = axios.create({
+export const axiosClient = axios.create({
     baseURL: BASE_URL,
 });
 
 export const useAxiosQuery = <T, >(url: string, keys: string[]) => {
     const query = useQuery({
         queryKey: [...keys],
-        queryFn: () => {
-            return axiosClient.get(url).then((response) => {
-                return response.data
-            });
+        queryFn: async () => {
+            const resp = await axiosClient.get(url);
+            return resp.data;
         }
     });
 
     return query;   
 }
 
+export const useAxiosInfinite = <T, >(url: string, keys: string[],
+    nextPageParam: (lastPage: T[], pages: T[][]) => any, pageSize = 10) => {
+    return useInfiniteQuery({
+        initialPageParam: 0,
+        queryKey: [...keys],
+        queryFn: async ({ pageParam }) => {
+            const queryStr = `?pageSize=${pageSize}&cursor=${pageParam}`;
+            const resp = await axiosClient.get<Page<T>>(url + queryStr);
+            return resp.data.items;
+        },
+        getNextPageParam: nextPageParam,
+    });
+
+}
+
 export const useAxioMutation = <T, >(url: string) => {
     const mutation = useMutation({
         mutationFn: (formData: FormData) => {
-            console.log(formData)
             return axiosClient.post(url, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
