@@ -2,7 +2,7 @@ import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Page } from '../common/types/posts';
 
-export const BASE_URL = 'http://192.168.0.100:3000/'
+export const BASE_URL = 'http://192.168.0.102:3000/'
 
 export const axiosClient = axios.create({
     baseURL: BASE_URL,
@@ -26,7 +26,7 @@ export const useAxiosInfinite = <T, >(url: string, keys: string[],
         initialPageParam: 0,
         queryKey: [...keys],
         queryFn: async ({ pageParam }) => {
-            const queryStr = `?pageSize=${pageSize}&cursor=${pageParam}`;
+            const queryStr = `?pagesize=${pageSize}&cursor=${pageParam}`;
             const resp = await axiosClient.get<Page<T>>(url + queryStr);
             return resp.data.items;
         },

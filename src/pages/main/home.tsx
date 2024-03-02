@@ -5,7 +5,7 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { BottomTabParamList } from './main';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
-import { useAxiosQuery } from '../../utils/network';
+import { BASE_URL, useAxiosQuery } from '../../utils/network';
 import Theme from '../../common/types/theme';
 import { useThemeContext } from '../../common/contexts/themeContext';
 import { Post, PostList } from '../../common/types/posts';
@@ -19,9 +19,20 @@ type PageNavigationProp = CompositeScreenProps<
 >
 
 function HomePage({navigation}: PageNavigationProp): React.JSX.Element {
-    const { data, error } = useAxiosQuery<PostList>('posts/getPosts', ['posts'])
     const theme = useThemeContext();
     const styles = getStyles(theme);
+
+    const playAudio = async (post: Post) => {
+        console.log(post)
+        const track: Track = {
+            url: BASE_URL + '/static/' + post.url,
+            type: TrackType.Dash,
+            title: post.title,
+        }
+        console.log(track)
+        await TrackPlayer.setQueue([track]);
+        TrackPlayer.play();
+    }
 
     return (
         <View style={styles.parent}>

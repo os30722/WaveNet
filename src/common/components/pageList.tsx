@@ -2,12 +2,24 @@ import React, { useCallback } from 'react';
 import { useThemeContext } from '../contexts/themeContext';
 import Theme from '../types/theme';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { useAxiosInfinite } from '../../utils/network';
+import { BASE_URL, useAxiosInfinite } from '../../utils/network';
 import { Post, PostList } from '../types/posts';
 import PostCards from './postCards';
+import TrackPlayer, { Track, TrackType } from 'react-native-track-player';
 
 interface Props {
     style: StyleSheet.NamedStyles<any>
+}
+
+const playAudio = async (post: Post) => {
+    const track: Track = {
+        url: BASE_URL + post.url,
+        type: TrackType.Dash,
+        title: post.title,
+    }
+    console.log(track)
+    await TrackPlayer.setQueue([track]);
+    TrackPlayer.play();
 }
 
 function PageList({ style }: Props): React.JSX.Element {
@@ -27,7 +39,6 @@ function PageList({ style }: Props): React.JSX.Element {
                     onEndReached={() => fetchNextPage()}
                     onEndReachedThreshold={5}
                     showsHorizontalScrollIndicator={false}
-                    
                 />
             }
         </View>
