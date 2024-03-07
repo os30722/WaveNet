@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { BottomTabParamList } from './main';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
-import { BASE_URL, useAxiosQuery } from '../../utils/network';
+import { BASE_URL, useAxiosInfinite, useAxiosQuery } from '../../utils/network';
 import Theme from '../../common/types/theme';
 import { useThemeContext } from '../../common/contexts/themeContext';
 import { Post, PostList } from '../../common/types/posts';
 import TrackPlayer, { Track, TrackType } from 'react-native-track-player';
 import PostCards from '../../common/components/postCards';
-import PageList from '../../common/components/pageList';
+
 
 type PageNavigationProp = CompositeScreenProps<
     BottomTabScreenProps<BottomTabParamList, 'Home'>,
@@ -21,6 +21,10 @@ type PageNavigationProp = CompositeScreenProps<
 function HomePage({navigation}: PageNavigationProp): React.JSX.Element {
     const theme = useThemeContext();
     const styles = getStyles(theme);
+    const nextPageParam = useCallback((lastPage: PostList, pages: PostList[]) => {
+        return lastPage.at(-1)?.post_id;
+    }, []);
+    const { data, fetchNextPage} = useAxiosInfinite<Post>('posts/getPosts', ['posts'], nextPageParam)
 
     const playAudio = async (post: Post) => {
         console.log(post)
@@ -36,7 +40,15 @@ function HomePage({navigation}: PageNavigationProp): React.JSX.Element {
 
     return (
         <View style={styles.parent}>
-            <PageList style={styles.list}/>
+            {data &&
+                <FlatList 
+                    data={data.pages.flat()}
+                    renderItem={({item}) => <PostCards post={item}/>}
+                    onEndReached={() => fetchNextPage()}
+                    onEndReachedThreshold={5}
+                    showsHorizontalScrollIndicator={false}
+                />
+            }
         </View>
     );
 }

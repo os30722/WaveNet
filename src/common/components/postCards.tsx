@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useThemeContext } from '../contexts/themeContext';
 import Theme from '../types/theme';
@@ -6,6 +6,7 @@ import { Post } from '../types/posts';
 import { BASE_URL } from '../../utils/network';
 import TrackPlayer, { Track, TrackType } from 'react-native-track-player';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useScrollEventsHandlersDefault } from '@gorhom/bottom-sheet';
 
 
 interface Props {
@@ -26,11 +27,12 @@ const playAudio = async (post: Post) => {
     TrackPlayer.play();
 }
 
-const INTERATION_SIZE = 20
+const INTERATION_SIZE = 25
 
 function PostCards({post, onClick }: Props): React.JSX.Element {
     const theme = useThemeContext();
     const styles = getStyles(theme);
+    const [liked, setLiked] = useState<number>(post.user_liked)
     
     return (
         <View style={styles.parent}>
@@ -41,19 +43,20 @@ function PostCards({post, onClick }: Props): React.JSX.Element {
                     <Text style={styles.title} numberOfLines={2} ellipsizeMode='tail'>{post.title}</Text>
                 </TouchableOpacity>
             </View>
+            <Text style={styles.author}>{(post.likes - 1*post.user_liked) + liked != 0 ? `${(post.likes-1*post.user_liked) + liked} Likes` : ''}</Text>
             <View style={styles.interactionPanel}>
                 <View style={styles.interaction}>
                     <Icon name='sine-wave' size={INTERATION_SIZE} color={theme.label} />
-                    <Text style={styles.interactionLabel}>40K</Text>
+                    <Text style={styles.interactionLabel}></Text>
                 </View>
                 <View style={styles.interaction}>
                     <Icon name='comment-outline' size={INTERATION_SIZE} color={theme.label} />
-                    <Text style={styles.interactionLabel}>50K</Text>
+                    <Text style={styles.interactionLabel}>{post.comments == 0 ? '' : post.comments }</Text>
                 </View>
-                <View style={styles.interaction}>
-                    <Icon name='heart-outline' size={INTERATION_SIZE} color={theme.label} />
-                    <Text style={styles.interactionLabel}>30K</Text>
-                </View>
+                <TouchableOpacity style={styles.interaction} onPress={() => setLiked(!liked)}>
+                    <Icon name={liked ? 'heart':'heart-outline'} size={INTERATION_SIZE} 
+                                    color={liked ? theme.primary: theme.label} />
+                </TouchableOpacity>
             </View>
         </View>
     )
@@ -66,6 +69,7 @@ const getStyles = (theme: Theme) => StyleSheet.create({
         paddingBottom: 15,
     },
     info: {
+        marginTop: 4,
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -91,7 +95,7 @@ const getStyles = (theme: Theme) => StyleSheet.create({
     },
     interaction: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     interactionLabel: {
         fontSize: 15,

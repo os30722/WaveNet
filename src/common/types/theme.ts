@@ -10,7 +10,7 @@ const darkTheme: Theme = {
     primary: '#d47204',
     background: '#000000',
     text: '#ffffff',
-    label: '#ababab',
+    label: '#cccccc',
     bottomSheet: '#212121',
 }
 
