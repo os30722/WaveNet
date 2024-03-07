@@ -10,6 +10,7 @@ import HomePage, { BottomTabParamList } from './pages/main/main';
 import MainPage from './pages/main/main';
 import SelectionPage from './pages/main/selection';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import CommentPage from './pages/main/comments';
 
 export type RootStackParamList = {
   Record: undefined;
@@ -19,6 +20,9 @@ export type RootStackParamList = {
   },
   Main: NavigatorScreenParams<BottomTabParamList>,
   Selection: undefined,
+  Comment: {
+    postId: number
+  }
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -41,6 +45,7 @@ function App(): React.JSX.Element {
                 presentation: 'transparentModal',
                 animation: 'none'
               }}/>
+              <Stack.Screen name='Comment' component={CommentPage} />
             </Stack.Group>
           </Stack.Navigator>
         </NavigationContainer>

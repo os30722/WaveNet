@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
+import { Button, FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { BottomTabParamList } from './main';
@@ -24,7 +24,7 @@ function HomePage({navigation}: PageNavigationProp): React.JSX.Element {
     const nextPageParam = useCallback((lastPage: PostList, pages: PostList[]) => {
         return lastPage.at(-1)?.post_id;
     }, []);
-    const { data, fetchNextPage} = useAxiosInfinite<Post>('posts/getPosts', ['posts'], nextPageParam)
+    const { data, fetchNextPage, refetch, isFetching} = useAxiosInfinite<Post>('posts/getPosts', ['posts'], nextPageParam)
 
     const playAudio = async (post: Post) => {
         console.log(post)
@@ -47,6 +47,15 @@ function HomePage({navigation}: PageNavigationProp): React.JSX.Element {
                     onEndReached={() => fetchNextPage()}
                     onEndReachedThreshold={5}
                     showsHorizontalScrollIndicator={false}
+                    refreshControl={    
+                        <RefreshControl
+                            refreshing={isFetching}
+                            onRefresh={refetch}
+                            title="Pull to refresh"
+                            progressBackgroundColor={theme.background}
+                            colors={[theme.primary]} 
+                         />
+                      }
                 />
             }
         </View>

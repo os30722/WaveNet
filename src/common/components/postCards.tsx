@@ -1,9 +1,9 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useThemeContext } from '../contexts/themeContext';
 import Theme from '../types/theme';
 import { Post } from '../types/posts';
-import { BASE_URL } from '../../utils/network';
+import { BASE_URL, useAxiosMutation } from '../../utils/network';
 import TrackPlayer, { Track, TrackType } from 'react-native-track-player';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useScrollEventsHandlersDefault } from '@gorhom/bottom-sheet';
@@ -27,12 +27,19 @@ const playAudio = async (post: Post) => {
     TrackPlayer.play();
 }
 
+
 const INTERATION_SIZE = 25
 
-function PostCards({post, onClick }: Props): React.JSX.Element {
+function PostCards({post}: Props): React.JSX.Element {
     const theme = useThemeContext();
     const styles = getStyles(theme);
-    const [liked, setLiked] = useState<number>(post.user_liked)
+    const [liked, setLiked] = useState<number>(Number(post.user_liked))
+    const { mutate } = useAxiosMutation(`/posts/like/${post.post_id}?action=${liked ? 'remove' : 'add'}`, {})
+
+    const likePost = useCallback(() => {
+        setLiked(prev => Number(!Boolean(prev)))
+        mutate()
+    }, [mutate])
     
     return (
         <View style={styles.parent}>
@@ -43,7 +50,7 @@ function PostCards({post, onClick }: Props): React.JSX.Element {
                     <Text style={styles.title} numberOfLines={2} ellipsizeMode='tail'>{post.title}</Text>
                 </TouchableOpacity>
             </View>
-            <Text style={styles.author}>{(post.likes - 1*post.user_liked) + liked != 0 ? `${(post.likes-1*post.user_liked) + liked} Likes` : ''}</Text>
+            <Text style={styles.author}>{(post.likes - 1*Number(post.user_liked)) + liked != 0 ? `${(post.likes-1*Number(post.user_liked)) + liked} Likes` : ''}</Text>
             <View style={styles.interactionPanel}>
                 <View style={styles.interaction}>
                     <Icon name='sine-wave' size={INTERATION_SIZE} color={theme.label} />
@@ -53,7 +60,7 @@ function PostCards({post, onClick }: Props): React.JSX.Element {
                     <Icon name='comment-outline' size={INTERATION_SIZE} color={theme.label} />
                     <Text style={styles.interactionLabel}>{post.comments == 0 ? '' : post.comments }</Text>
                 </View>
-                <TouchableOpacity style={styles.interaction} onPress={() => setLiked(!liked)}>
+                <TouchableOpacity style={styles.interaction} onPress={likePost}>
                     <Icon name={liked ? 'heart':'heart-outline'} size={INTERATION_SIZE} 
                                     color={liked ? theme.primary: theme.label} />
                 </TouchableOpacity>

@@ -6,7 +6,7 @@ import { useThemeContext } from '../common/contexts/themeContext';
 import Theme from '../common/types/theme';
 import { NativeStackScreenProps } from '@react-navigation/native-stack/lib/typescript/src/types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useAxioMutation } from '../utils/network';
+import { useAxiosFormMutation } from '../utils/network';
 
 type PageNavigationProp =  NativeStackScreenProps<
     RootStackParamList,
@@ -19,13 +19,13 @@ function PublishPage({navigation, route}: PageNavigationProp): React.JSX.Element
     const styles = getStyles(theme);
     const [title, setTitle] = useState<string>()
     const [description, setDescription] = useState<string>();
-    const { mutate } = useAxioMutation('/posts/upload');
+    const { mutate } = useAxiosFormMutation('/posts/upload');
 
     const submitForm = () =>     {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('description', description);
-        formData.append('recoding', {
+        formData.append('recording', {
             uri: params.uri,
             type: 'audio/m4a',
             name: 'recording.m4a',    
