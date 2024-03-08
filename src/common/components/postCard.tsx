@@ -6,14 +6,11 @@ import { Post } from '../types/posts';
 import { BASE_URL, useAxiosMutation } from '../../utils/network';
 import TrackPlayer, { Track, TrackType } from 'react-native-track-player';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useScrollEventsHandlersDefault } from '@gorhom/bottom-sheet';
-
 
 interface Props {
-    post: Post
-    onClick?: (post: Post) => void 
+    post: Post,
+    navigateComment: (postId: number) => void
 }
-
 
 const playAudio = async (post: Post) => {
     const track: Track = {
@@ -30,7 +27,7 @@ const playAudio = async (post: Post) => {
 
 const INTERATION_SIZE = 25
 
-function PostCards({post}: Props): React.JSX.Element {
+function PostCard({post, navigateComment}: Props): React.JSX.Element {
     const theme = useThemeContext();
     const styles = getStyles(theme);
     const [liked, setLiked] = useState<number>(Number(post.user_liked))
@@ -56,10 +53,10 @@ function PostCards({post}: Props): React.JSX.Element {
                     <Icon name='sine-wave' size={INTERATION_SIZE} color={theme.label} />
                     <Text style={styles.interactionLabel}></Text>
                 </View>
-                <View style={styles.interaction}>
+                <TouchableOpacity style={styles.interaction} onPress={() => navigateComment(post.post_id)}>
                     <Icon name='comment-outline' size={INTERATION_SIZE} color={theme.label} />
                     <Text style={styles.interactionLabel}>{post.comments == 0 ? '' : post.comments }</Text>
-                </View>
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.interaction} onPress={likePost}>
                     <Icon name={liked ? 'heart':'heart-outline'} size={INTERATION_SIZE} 
                                     color={liked ? theme.primary: theme.label} />
@@ -112,4 +109,4 @@ const getStyles = (theme: Theme) => StyleSheet.create({
 })
 
 
-export default memo(PostCards);
+export default memo(PostCard);

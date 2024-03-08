@@ -9,8 +9,7 @@ import { BASE_URL, useAxiosInfinite, useAxiosQuery } from '../../utils/network';
 import Theme from '../../common/types/theme';
 import { useThemeContext } from '../../common/contexts/themeContext';
 import { Post, PostList } from '../../common/types/posts';
-import TrackPlayer, { Track, TrackType } from 'react-native-track-player';
-import PostCards from '../../common/components/postCards';
+import PostCards from '../../common/components/postCard';
 
 
 type PageNavigationProp = CompositeScreenProps<
@@ -26,24 +25,18 @@ function HomePage({navigation}: PageNavigationProp): React.JSX.Element {
     }, []);
     const { data, fetchNextPage, refetch, isFetching} = useAxiosInfinite<Post>('posts/getPosts', ['posts'], nextPageParam)
 
-    const playAudio = async (post: Post) => {
-        console.log(post)
-        const track: Track = {
-            url: BASE_URL + '/static/' + post.url,
-            type: TrackType.Dash,
-            title: post.title,
-        }
-        console.log(track)
-        await TrackPlayer.setQueue([track]);
-        TrackPlayer.play();
-    }
+    const navigateComment = useCallback((postId: number) => {
+        navigation.navigate('Comments', {
+            postId: postId
+        })
+    }, [navigation])
+
 
     return (
         <View style={styles.parent}>
-            {data &&
                 <FlatList 
-                    data={data.pages.flat()}
-                    renderItem={({item}) => <PostCards post={item}/>}
+                    data={data?.pages.flat()}
+                    renderItem={({item}) => <PostCards post={item} navigateComment={navigateComment}/>}
                     onEndReached={() => fetchNextPage()}
                     onEndReachedThreshold={5}
                     showsHorizontalScrollIndicator={false}
@@ -57,7 +50,6 @@ function HomePage({navigation}: PageNavigationProp): React.JSX.Element {
                          />
                       }
                 />
-            }
         </View>
     );
 }

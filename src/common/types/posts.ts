@@ -14,3 +14,13 @@ export type Page<T> = {
     total_count: number,
     items: Array<T>
 }
+
+
+export type Comment = {
+    comment_id: number,
+    msg: string,
+    usrname: string,
+    replies_count: number
+}
+
+export type CommentList = Array<Comment>;
