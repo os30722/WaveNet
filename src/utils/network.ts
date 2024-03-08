@@ -35,14 +35,15 @@ export const useAxiosInfinite = <T, >(url: string, keys: string[],
 
 }
 
-export const useAxiosMutation = <T, >(url: string, data = {}) => {
+export const useAxiosMutation = <T, >(url: string, onSuccess?: (data: any) => void) => {
     const mutation = useMutation({
-        mutationFn: () => {
+        mutationFn: (data: any = {}) => {
             return axiosClient.post(url, data)
             .then((repsponse) =>  {
                 return repsponse.data;
             }).catch(err => console.log(err.request))
-        }
+        },
+        onSuccess: onSuccess
     });
 
     return mutation;

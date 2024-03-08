@@ -39,7 +39,7 @@ function HomePage({navigation}: PageNavigationProp): React.JSX.Element {
                     renderItem={({item}) => <PostCards post={item} navigateComment={navigateComment}/>}
                     onEndReached={() => fetchNextPage()}
                     onEndReachedThreshold={5}
-                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
                     refreshControl={    
                         <RefreshControl
                             refreshing={isFetching}

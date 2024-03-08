@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useThemeContext } from '../contexts/themeContext';
 import Theme from '../types/theme';
@@ -32,6 +32,10 @@ function PostCard({post, navigateComment}: Props): React.JSX.Element {
     const styles = getStyles(theme);
     const [liked, setLiked] = useState<number>(Number(post.user_liked))
     const { mutate } = useAxiosMutation(`/posts/like/${post.post_id}?action=${liked ? 'remove' : 'add'}`, {})
+
+    useEffect(() => {
+        setLiked(Number(post.user_liked))
+    }, [post.user_liked])
 
     const likePost = useCallback(() => {
         setLiked(prev => Number(!Boolean(prev)))

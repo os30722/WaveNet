@@ -19,7 +19,7 @@ export type Page<T> = {
 export type Comment = {
     comment_id: number,
     msg: string,
-    usrname: string,
+    username: string,
     replies_count: number
 }
 
