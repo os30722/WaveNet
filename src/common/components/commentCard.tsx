@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Theme from '../types/theme';
 import { useThemeContext } from '../contexts/themeContext';
 import { Comment } from '../types/posts';
-import { Icon } from 'react-native-vector-icons/Icon';
+
 
 interface Props {
     comment: Comment
