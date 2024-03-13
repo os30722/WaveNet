@@ -31,13 +31,13 @@ function PostCard({post, navigateComment}: Props): React.JSX.Element {
     const theme = useThemeContext();
     const styles = getStyles(theme);
     const [liked, setLiked] = useState<number>(Number(post.user_liked))
-    const { mutate } = useAxiosMutation(`/posts/like/${post.post_id}?action=${liked ? 'remove' : 'add'}`, {})
+    const { mutate } = useAxiosMutation(`/posts/like/${post.post_id}?action=${liked ? 'remove' : 'add'}`)
 
     useEffect(() => {
         setLiked(Number(post.user_liked))
     }, [post.user_liked])
 
-    const likePost = useCallback(() => {
+    const likePost = useCallback(() => {    
         setLiked(prev => Number(!Boolean(prev)))
         mutate()
     }, [mutate])
