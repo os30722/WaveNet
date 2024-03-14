@@ -7,9 +7,10 @@ import { Comment } from '../types/posts';
 
 interface Props {
     comment: Comment
+    onClickReply?: (commentId: number) => void
 }
 
-function CommentCard({comment}: Props): React.JSX.Element {
+function CommentCard({comment, onClickReply}: Props): React.JSX.Element {
     const theme = useThemeContext();
     const styles = getStyles(theme);
 
@@ -22,8 +23,8 @@ function CommentCard({comment}: Props): React.JSX.Element {
                     <Text style={styles.msg}>{comment.msg}</Text>
                 </View>
             </View>
-            <TouchableOpacity style={styles.interactions}>
-                <Text style={styles.labels}>{comment.replies_count ? `${comment.replies_count} Replies` : ""}</Text>
+            <TouchableOpacity style={styles.interactions} onPress={() => onClickReply?.(comment.comment_id)}>
+                <Text style={styles.labels}>{comment.replies_count ? `${comment.replies_count} Replies` : 'Reply'}</Text>
             </TouchableOpacity>
         </View>
     )

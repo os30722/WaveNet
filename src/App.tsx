@@ -11,6 +11,7 @@ import MainPage from './pages/main/main';
 import SelectionPage from './pages/main/selection';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import CommentsPage from './pages/comments';
+import RepliesPage from './pages/replies';
 
 export type RootStackParamList = {
   Record: undefined;
@@ -22,6 +23,10 @@ export type RootStackParamList = {
   Selection: undefined,
   Comments: {
     postId: number
+  },
+  Replies: {
+    postId: number,
+    commentId: number
   }
 }
 
@@ -45,7 +50,8 @@ function App(): React.JSX.Element {
                 presentation: 'transparentModal',
                 animation: 'none'
               }}/>
-              <Stack.Screen name='Comments' component={CommentsPage} />
+              <Stack.Screen name='Comments' component={CommentsPage} />             
+              <Stack.Screen name='Replies' component={RepliesPage} />
             </Stack.Group>
           </Stack.Navigator>
         </NavigationContainer>

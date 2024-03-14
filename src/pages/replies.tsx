@@ -11,27 +11,31 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 type PageNavigationProp =  NativeStackScreenProps<
     RootStackParamList,
-    'Comments'
+    'Replies'
 >
 
 
 const INTERATION_SIZE = 32
 
-function CommentsPage({navigation, route}: PageNavigationProp): React.JSX.Element {
+function RepliesPage({navigation, route}: PageNavigationProp): React.JSX.Element {
     const params = route.params
     const theme = useThemeContext();
     const styles = getStyles(theme);
     const nextPageParam = useCallback((lastPage: CommentList, paes: CommentList[]) => {
         return lastPage.at(-1)?.comment_id;
     }, []);
-    const { data, fetchNextPage, refetch, isFetching} = useAxiosInfinite<Comment>(`posts/comments/${params.postId}`, ['comments', params.postId.toString()], nextPageParam)
+    const { data, fetchNextPage, refetch, isFetching} = useAxiosInfinite<Comment>(`posts/comments/${params.postId}`, ['replies', params.postId.toString()]
+                                            , nextPageParam, {
+                                                parent_id: params.commentId.toString()
+                                            })
     const [comment, setComment] = useState<string>('')
     const { mutate: addPost } = useAxiosMutation('/posts/comment?action=add')
 
     const addComment = () => {
         addPost({
             post_id: params.postId,
-            msg: comment
+            msg: comment,
+            parent_id: params.commentId,
         }, {
             onSuccess: (data) => {
                 refetch()
@@ -40,18 +44,11 @@ function CommentsPage({navigation, route}: PageNavigationProp): React.JSX.Elemen
         setComment('')
     }
 
-    const navigateReply = useCallback((commentId: number) => {
-        navigation.navigate('Replies', {
-            postId: params.postId,
-            commentId: commentId
-        })
-    }, [navigation])
-
     return (
         <View style={styles.parent}>
              <FlatList
                     data={data?.pages.flat()}
-                    renderItem={({item}) => <CommentCard comment={item} onClickReply={navigateReply}/>}
+                    renderItem={({item}) => <CommentCard comment={item} reply/>}
                     onEndReached={() => fetchNextPage()}
                     onEndReachedThreshold={5}
                     showsVerticalScrollIndicator={false}
@@ -71,7 +68,7 @@ function CommentsPage({navigation, route}: PageNavigationProp): React.JSX.Elemen
                     multiline={true}
                     style={styles.commentBox}
                     selectionColor={theme.text}
-                    placeholder='Add a comment....'
+                    placeholder='Add a reply....'
                     placeholderTextColor={theme.label}
                     value={comment}
                     onChangeText={setComment}
@@ -112,4 +109,4 @@ const getStyles = (theme: Theme) => StyleSheet.create({
     }
 }) 
 
-export default CommentsPage;
+export default RepliesPage;

@@ -21,12 +21,16 @@ export const useAxiosQuery = <T, >(url: string, keys: string[]) => {
 }
 
 export const useAxiosInfinite = <T, >(url: string, keys: string[],
-    nextPageParam: (lastPage: T[], pages: T[][]) => any, pageSize = 10) => {
+    nextPageParam: (lastPage: T[], pages: T[][]) => any, query: Record<string,string> = {}, pageSize = 10) => {
     return useInfiniteQuery({
         initialPageParam: 0,
         queryKey: [...keys],
         queryFn: async ({ pageParam }) => {
-            const queryStr = `?pagesize=${pageSize}&cursor=${pageParam}`;
+            let queryStr = '?'
+            for (const prop in query) {
+                queryStr += `${prop}=${query[prop]}&`
+            }
+            queryStr += `pagesize=${pageSize}&cursor=${pageParam}`;
             const resp = await axiosClient.get<Page<T>>(url + queryStr);
             return resp.data.items;
         },

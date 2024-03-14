@@ -44,7 +44,7 @@ function HomePage({navigation}: PageNavigationProp): React.JSX.Element {
                         <RefreshControl
                             refreshing={isFetching}
                             onRefresh={refetch}
-                            title="Pull to refresh"
+                            title='Pull to refresh'
                             progressBackgroundColor={theme.background}
                             colors={[theme.primary]} 
                          />
